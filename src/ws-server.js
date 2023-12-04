@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws';
+import authController from './controllers/auth-controller.js';
 
 class WsServer {
 	constructor(server) {
@@ -17,11 +18,11 @@ class WsServer {
 
 			switch (type) {
 				case 'sign-up':
-					console.log('1');
+					authController.signup(ws, data);
 					break;
 
 				case 'sign-in':
-					console.log('2');
+					authController.signin(ws, data);
 					break;
 
 				case 'posting':
