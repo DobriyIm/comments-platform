@@ -1,12 +1,13 @@
 import bcrypt from 'bcrypt';
-
-const users = [];
+import User from '../models/user-model.js';
 
 const createOne = async userData => {
 	try {
 		const { email } = userData;
 
-		const existingUser = users.find(user => user.email == email);
+		const existingUser = await User.findOne({
+			where: { email: email }
+		});
 
 		if (existingUser) {
 			throw {
@@ -18,22 +19,37 @@ const createOne = async userData => {
 		const hashedPassword = await bcrypt.hash(userData.password, 10);
 
 		const newUser = {
-			id: users.length + 1,
 			name: userData.name,
 			email: userData.email,
 			password: hashedPassword
 		};
 
-		users.push(newUser);
+		const createdUser = await User.create(newUser);
 
-		return newUser;
+		return createdUser;
 	} catch (err) {
 		throw err;
 	}
 };
 
-const findUser = email => {
-	return users.find(u => u.email === email);
+const getOneByEmail = async email => {
+	try {
+		const foundUser = await User.findOne({ where: { email: email } });
+
+		return foundUser;
+	} catch (err) {
+		throw err;
+	}
 };
 
-export default { createOne, findUser };
+const getOneById = async id => {
+	try {
+		const foundUser = await User.findByPk(id);
+
+		return foundUser;
+	} catch (err) {
+		throw err;
+	}
+};
+
+export default { createOne, getOneByEmail, getOneById };

@@ -22,6 +22,7 @@ const signup = async (ws, data) => {
 				data: err
 			})
 		);
+
 		if (err instanceof Error) console.log(err);
 	}
 };
