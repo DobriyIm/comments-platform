@@ -25,6 +25,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"pg": "^8.11.3",
 		"sequelize": "^6.35.1",
+		"sequelize-hierarchy-next": "^1.0.0",
 		"ws": "^8.14.2"
 	},
 	"devDependencies": {

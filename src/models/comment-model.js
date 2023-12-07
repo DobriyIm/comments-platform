@@ -1,5 +1,4 @@
 import { DataTypes, Model } from 'sequelize';
-import User from './user-model.js';
 
 class Comment extends Model {
 	static init(sequelize) {
@@ -18,14 +17,12 @@ class Comment extends Model {
 				fileLink: {
 					type: DataTypes.STRING,
 					allowNull: true
-				},
-				comments: {
-					type: DataTypes.ARRAY(DataTypes.UUID)
 				}
 			},
 			{
 				sequelize,
-				updatedAt: false
+				updatedAt: false,
+				hierarchy: { as: 'parent', childrenAs: 'comments' }
 			}
 		);
 	}

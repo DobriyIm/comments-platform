@@ -2,25 +2,15 @@ import Comment from '../models/comment-model.js';
 
 const createOne = async data => {
 	try {
-		const { user, parentId } = data;
+		const { user } = data;
 
 		const fileLink = data.file;
-
-		// if (parentId) {
-		// 	const parentComment = await getOneById(parentId);
-
-		// 	if (!parentComment) {
-		// 		throw {
-		// 			status: 409,
-		// 			message: `Comment with id ${parentId} not found.`
-		// 		};
-		// 	}
-		// }
 
 		const newComment = {
 			text: data.text,
 			fileLink: fileLink,
-			UserId: user.id
+			UserId: user.id,
+			parentId: data.parentId
 		};
 
 		const createdComment = await Comment.create(newComment);
@@ -41,14 +31,11 @@ const getOneById = async id => {
 	}
 };
 
-const updateParent = async (comment, childId) => {
-	try {
-		comment.comments = [...(comment.comments || []), childId];
-
-		await comment.save();
-	} catch (err) {
-		throw err;
-	}
+const getAll = async () => {
+	const resp = await Comment.findAll({
+		include: [{ model: Comment, as: 'comments', nested: true }]
+	});
+	console.log(resp);
 };
 
-export default { createOne };
+export default { createOne, getAll };

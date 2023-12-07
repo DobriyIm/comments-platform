@@ -1,9 +1,11 @@
 import { DataTypes, Sequelize } from 'sequelize';
+import sequelizeHierarchyNext from 'sequelize-hierarchy-next';
 import CommentModel from './models/comment-model.js';
 import UserModel from './models/user-model.js';
 
 class DbConnector {
 	constructor(config) {
+		sequelizeHierarchyNext(Sequelize);
 		this.sequelize = new Sequelize(config);
 		this.initModels();
 	}
