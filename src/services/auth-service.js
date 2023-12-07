@@ -7,9 +7,7 @@ const signup = async data => {
 		const createdUser = await userService.createOne(data);
 
 		const payload = {
-			sub: createdUser.id,
-			name: createdUser.name,
-			email: createdUser.email
+			sub: createdUser.id
 		};
 
 		const accessToken = await jwt.sign(
@@ -46,9 +44,7 @@ const signin = async data => {
 		}
 
 		const payload = {
-			sub: foundUser.id,
-			name: foundUser.name,
-			email: foundUser.email
+			sub: foundUser.id
 		};
 
 		const accessToken = await jwt.sign(

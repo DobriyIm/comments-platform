@@ -44,7 +44,7 @@ const getOneByEmail = async email => {
 
 const getOneById = async id => {
 	try {
-		const foundUser = await User.findByPk(id);
+		const foundUser = (await User.findByPk(id)).dataValues;
 
 		return foundUser;
 	} catch (err) {

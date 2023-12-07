@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
-import Comment from './comment-model.js';
+import User from './user-model.js';
 
-class User extends Model {
+class Comment extends Model {
 	static init(sequelize) {
 		super.init(
 			{
@@ -11,19 +11,16 @@ class User extends Model {
 					allowNull: false,
 					primaryKey: true
 				},
-				name: {
-					type: DataTypes.STRING,
-					unique: true,
+				text: {
+					type: DataTypes.TEXT,
 					allowNull: false
 				},
-				email: {
+				fileLink: {
 					type: DataTypes.STRING,
-					unique: true,
-					allowNull: false
+					allowNull: true
 				},
-				password: {
-					type: DataTypes.STRING,
-					allowNull: false
+				comments: {
+					type: DataTypes.ARRAY(DataTypes.UUID)
 				}
 			},
 			{
@@ -34,4 +31,4 @@ class User extends Model {
 	}
 }
 
-export default User;
+export default Comment;

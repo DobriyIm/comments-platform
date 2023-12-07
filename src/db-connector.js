@@ -1,4 +1,5 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
+import CommentModel from './models/comment-model.js';
 import UserModel from './models/user-model.js';
 
 class DbConnector {
@@ -20,6 +21,13 @@ class DbConnector {
 
 	initModels() {
 		UserModel.init(this.sequelize);
+		CommentModel.init(this.sequelize);
+
+		UserModel.hasMany(CommentModel, {
+			type: DataTypes.UUID,
+			onDelete: 'CASCADE'
+		});
+		CommentModel.belongsTo(UserModel, { allowNull: false });
 	}
 }
 

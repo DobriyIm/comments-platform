@@ -1,5 +1,6 @@
 import { WebSocketServer } from 'ws';
 import authController from './controllers/auth-controller.js';
+import commentController from './controllers/comment-controller.js';
 import authMiddleware from './middlewares/auth-middleware.js';
 
 class WsServer {
@@ -16,21 +17,21 @@ class WsServer {
 	handler(ws) {
 		try {
 			ws.on('message', msg => {
-				const { data, type, token } = JSON.parse(msg);
+				const { data, event } = JSON.parse(msg);
 
-				switch (type) {
-					case 'sign-up':
+				switch (event) {
+					case 'SIGN_UP':
 						authController.signup(ws, data);
 						break;
 
-					case 'sign-in':
+					case 'SIGN_IN':
 						authController.signin(ws, data);
 						break;
 
-					case 'posting':
-						authMiddleware.authenticate(ws, token, () => {
-							console.log('Posting, posting');
-						});
+					case 'ADD_COMMENT':
+						authMiddleware.authenticate(ws, msg, () =>
+							commentController.create(ws, data)
+						);
 						break;
 				}
 			});

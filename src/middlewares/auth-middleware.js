@@ -1,7 +1,9 @@
 import authService from '../services/auth-service.js';
 
-const authenticate = async (ws, token, next) => {
+const authenticate = async (ws, msg, next) => {
 	try {
+		const { token } = JSON.parse(msg);
+
 		ws.user = await authService.authenticate(token);
 
 		next();
