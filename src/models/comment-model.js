@@ -14,7 +14,7 @@ class Comment extends Model {
 					type: DataTypes.TEXT,
 					allowNull: false
 				},
-				fileLink: {
+				filePath: {
 					type: DataTypes.STRING,
 					allowNull: true
 				}

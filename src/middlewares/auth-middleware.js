@@ -4,7 +4,12 @@ const authenticate = async (ws, msg, next) => {
 	try {
 		const { token } = JSON.parse(msg);
 
-		ws.user = await authService.authenticate(token);
+		const foundUser = await authService.authenticate(token);
+		ws.user = {
+			id: foundUser.id,
+			name: foundUser.name,
+			email: foundUser.email
+		};
 
 		next();
 	} catch (err) {

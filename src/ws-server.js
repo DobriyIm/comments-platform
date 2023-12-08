@@ -2,6 +2,7 @@ import { WebSocketServer } from 'ws';
 import authController from './controllers/auth-controller.js';
 import commentController from './controllers/comment-controller.js';
 import authMiddleware from './middlewares/auth-middleware.js';
+import fileService from './services/file-service.js';
 
 class WsServer {
 	constructor(server) {
@@ -32,6 +33,9 @@ class WsServer {
 						authMiddleware.authenticate(ws, msg, () =>
 							commentController.create(ws, data)
 						);
+						break;
+					case 'TEST':
+						fileService.uploadFile(data);
 						break;
 				}
 			});

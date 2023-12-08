@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Send Comment with File via WebSocket</title>
+	</head>
+	<body>
+		<input type="file" id="fileInput" />
+		<textarea
+			id="commentText"
+			placeholder="Enter your comment text"
+		></textarea>
+		<button onclick="sendComment()">Send Comment</button>
+
+		<script>
+			const socket = new WebSocket('ws://localhost:3000');
+
+			function sendComment() {
+				const fileInput = document.getElementById('fileInput');
+				const commentText =
+					document.getElementById('commentText').value;
+
+				const reader = new FileReader();
+				reader.onload = async event => {
+					const base64Data = event.target.result.split(',')[1]; // get base64 data
+
+					const payload = {
+						event: 'ADD_COMMENT',
+						token:
+							'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmN2E3ZjU2ZC1kNzI1LTQ1MmMtOGI5NC00YzAwNzdmZmEwYzMiLCJuYW1lIjoiVXNlciIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJpYXQiOjE3MDE5NzUwMTd9.2IoyZ-Y4aOckjQvP3eeuhnAtY73DCiCH8zsbQGo-ngQ', // replace with your actual token
+						data: {
+							text: commentText,
+							file: {
+								name: fileInput.files[0].name,
+								data: base64Data
+							}
+						}
+					};
+
+					socket.send(JSON.stringify(payload));
+				};
+
+				if (fileInput.files.length > 0) {
+					reader.readAsDataURL(fileInput.files[0]);
+				} else {
+					// If no file is selected, send the comment without a file
+					const payload = {
+						event: 'ADD_COMMENT',
+						token: 'Bearer your_token_here', // replace with your actual token
+						data: {
+							parentId: 'ID',
+							text: commentText
+						}
+					};
+
+					socket.send(JSON.stringify(payload));
+				}
+			}
+		</script>
+	</body>
+</html>

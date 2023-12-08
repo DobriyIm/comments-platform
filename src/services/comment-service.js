@@ -1,17 +1,20 @@
 import Comment from '../models/comment-model.js';
+import fileService from './file-service.js';
 
 const createOne = async data => {
 	try {
-		const { user } = data;
-
-		const fileLink = data.file;
+		const { user, file } = data;
 
 		const newComment = {
 			text: data.text,
-			fileLink: fileLink,
 			UserId: user.id,
 			parentId: data.parentId
 		};
+
+		if (file) {
+			const filePath = await fileService.uploadFile(file);
+			newComment.fileLink = filePath;
+		}
 
 		const createdComment = await Comment.create(newComment);
 
