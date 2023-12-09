@@ -1,4 +1,5 @@
 import Comment from '../models/comment-model.js';
+import User from '../models/user-model.js';
 import fileService from './file-service.js';
 
 const createOne = async data => {
@@ -13,7 +14,7 @@ const createOne = async data => {
 
 		if (file) {
 			const filePath = await fileService.uploadFile(file);
-			newComment.fileLink = filePath;
+			newComment.filePath = filePath;
 		}
 
 		const createdComment = await Comment.create(newComment);
@@ -35,10 +36,28 @@ const getOneById = async id => {
 };
 
 const getAll = async () => {
-	const resp = await Comment.findAll({
-		include: [{ model: Comment, as: 'comments', nested: true }]
+	const dbResult = await Comment.findAll({
+		hierarchy: true,
+		include: [{ model: User, attributes: ['name', 'email'] }]
 	});
-	console.log(resp);
+
+	const comments = transformFileField(dbResult);
+
+	return comments;
+};
+
+const transformFileField = async comments => {
+	const promises = comments.map(async comment => {
+		comment.filePath = await fileService.toUrl(comment.filePath);
+
+		if (comment.comments) {
+			comment.comments = await transformFileField(comment.comments);
+		}
+
+		return comment;
+	});
+
+	return await Promise.all(promises);
 };
 
 export default { createOne, getAll };

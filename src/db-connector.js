@@ -27,9 +27,12 @@ class DbConnector {
 
 		UserModel.hasMany(CommentModel, {
 			type: DataTypes.UUID,
-			onDelete: 'CASCADE'
+			onDelete: 'CASCADE',
+			as: 'comments'
 		});
-		CommentModel.belongsTo(UserModel, { allowNull: false });
+		CommentModel.belongsTo(UserModel, {
+			allowNull: false
+		});
 	}
 }
 

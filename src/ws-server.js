@@ -34,8 +34,8 @@ class WsServer {
 							commentController.create(ws, data)
 						);
 						break;
-					case 'TEST':
-						fileService.uploadFile(data);
+					case 'GET_PART':
+						commentController.get(ws, data);
 						break;
 				}
 			});

@@ -26,9 +26,17 @@ const create = async (ws, data) => {
 	}
 };
 
-const sendAll = async (ws, data) => {
+const get = async (ws, data) => {
 	try {
-		await commentService.getAll();
+		const serviceResult = await commentService.getAll();
+
+		const resposne = {
+			type: 'GET_PART',
+			succes: true,
+			data: serviceResult
+		};
+
+		ws.send(JSON.stringify(resposne));
 	} catch (err) {
 		ws.send(
 			JSON.stringify({
@@ -42,4 +50,4 @@ const sendAll = async (ws, data) => {
 	}
 };
 
-export default { create };
+export default { create, get };
