@@ -1,8 +1,7 @@
-import { WebSocketServer } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import authController from './controllers/auth-controller.js';
 import commentController from './controllers/comment-controller.js';
 import authMiddleware from './middlewares/auth-middleware.js';
-import fileService from './services/file-service.js';
 
 class WsServer {
 	constructor(server) {
@@ -12,6 +11,14 @@ class WsServer {
 	listen() {
 		this.wss.on('connection', async ws => {
 			this.handler(ws);
+		});
+	}
+
+	broadcast(ws) {
+		this.wss.clients.forEach(client => {
+			if (client !== ws && client.readyState === WebSocket.OPEN) {
+				commentController.notify(client);
+			}
 		});
 	}
 
@@ -33,6 +40,7 @@ class WsServer {
 						authMiddleware.authenticate(ws, msg, () =>
 							commentController.create(ws, data)
 						);
+						this.broadcast(ws);
 						break;
 					case 'GET_PART':
 						authMiddleware.authenticate(ws, msg, () =>

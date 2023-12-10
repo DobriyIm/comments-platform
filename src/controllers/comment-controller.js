@@ -7,7 +7,7 @@ const create = async (ws, data) => {
 		const serviceResult = await commentService.createOne(data);
 
 		const resposne = {
-			type: 'ADD_COMMENT',
+			event: 'ADD_COMMENT',
 			succes: true,
 			data: serviceResult
 		};
@@ -17,7 +17,7 @@ const create = async (ws, data) => {
 		ws.send(
 			JSON.stringify({
 				event: 'ADD_COMMENT',
-				success: 'false',
+				success: false,
 				data: err
 			})
 		);
@@ -33,7 +33,7 @@ const getPart = async (ws, data) => {
 		const serviceResult = await commentService.getPart(limit, offset);
 
 		const resposne = {
-			type: 'GET_PART',
+			event: 'GET_PART',
 			succes: true,
 			data: serviceResult
 		};
@@ -43,7 +43,7 @@ const getPart = async (ws, data) => {
 		ws.send(
 			JSON.stringify({
 				event: 'GET_PART',
-				success: 'false',
+				success: false,
 				data: err
 			})
 		);
@@ -52,4 +52,16 @@ const getPart = async (ws, data) => {
 	}
 };
 
-export default { create, getPart };
+const notify = async ws => {
+	try {
+		const resposne = {
+			event: 'UPDATE'
+		};
+
+		ws.send(JSON.stringify(resposne));
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+export default { create, getPart, notify };

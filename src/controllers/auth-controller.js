@@ -5,11 +5,11 @@ const signup = async (ws, data) => {
 		const serviceResult = await authService.signup(data);
 
 		const resposne = {
-			type: 'sign-up',
+			event: 'SIGN_UP',
 			succes: true,
 			data: {
 				id: serviceResult.id,
-				accessToken: serviceResult.accessToken
+				token: serviceResult.accessToken
 			}
 		};
 
@@ -17,8 +17,8 @@ const signup = async (ws, data) => {
 	} catch (err) {
 		ws.send(
 			JSON.stringify({
-				type: 'sign-up',
-				success: 'false',
+				event: 'SIGN_UP',
+				success: false,
 				data: err
 			})
 		);
@@ -32,11 +32,11 @@ const signin = async (ws, data) => {
 		const serviceResult = await authService.signin(data);
 
 		const resposne = {
-			type: 'sign-in',
+			event: 'SIGN_IN',
 			success: true,
 			data: {
 				id: serviceResult.id,
-				accessToken: serviceResult.accessToken
+				token: serviceResult.accessToken
 			}
 		};
 
@@ -44,8 +44,8 @@ const signin = async (ws, data) => {
 	} catch (err) {
 		ws.send(
 			JSON.stringify({
-				type: 'sign-in',
-				success: 'false',
+				event: 'SIGN_IN',
+				success: false,
 				data: err
 			})
 		);
