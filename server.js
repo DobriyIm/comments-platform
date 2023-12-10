@@ -1,6 +1,5 @@
 import express from 'express';
 import * as http from 'http';
-import dbConfig from './src/config/db-config.js';
 import DbConnector from './src/db-connector.js';
 import WsServer from './src/ws-server.js';
 

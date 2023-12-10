@@ -1,12 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
-import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+import storageConfig from '../config/storage-config.js';
 import fileHandler from '../utilities/file-handler.js';
 
-const supabase = createClient(
-	process.env.SUPABASE_URL,
-	process.env.SUPABASE_KEY
-);
+const supabase = createClient(storageConfig.URL, storageConfig.KEY);
 
 const allowedExtensions = ['jpg', 'gif', 'png', 'txt'];
 
@@ -36,7 +33,7 @@ const uploadFile = async file => {
 			type === 'txt' ? buffer : await fileHandler.imgHandler(buffer);
 
 		const { data, error } = await supabase.storage
-			.from('Files')
+			.from(storageConfig.BUCKET_NAME)
 			.upload(`${uuidv4()}.${type}`, uploadingBuffer);
 
 		if (error) {
@@ -55,7 +52,7 @@ const uploadFile = async file => {
 const toBase64 = async filePath => {
 	try {
 		const { data, error } = await supabase.storage
-			.from('Files')
+			.from(storageConfig.BUCKET_NAME)
 			.download(filePath);
 
 		if (error) {

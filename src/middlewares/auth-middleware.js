@@ -15,8 +15,8 @@ const authenticate = async (ws, msg, next) => {
 	} catch (err) {
 		ws.send(
 			JSON.stringify({
-				type: 'auth',
-				success: 'false',
+				event: 'AUTH',
+				success: false,
 				data: err
 			})
 		);

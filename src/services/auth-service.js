@@ -58,16 +58,16 @@ const signin = async data => {
 	}
 };
 
-const authenticate = async authHeader => {
+const authenticate = async authToken => {
 	try {
-		if (!authHeader) {
+		if (!authToken) {
 			throw {
 				status: 401,
 				message: 'Authorization header not provided'
 			};
 		}
 
-		const tokenParts = authHeader.split(' ');
+		const tokenParts = authToken.split(' ');
 		if (tokenParts[0] != 'Bearer') {
 			throw {
 				status: 401,
