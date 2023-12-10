@@ -26,9 +26,11 @@ const create = async (ws, data) => {
 	}
 };
 
-const get = async (ws, data) => {
+const getPart = async (ws, data) => {
 	try {
-		const serviceResult = await commentService.getAll();
+		const { limit, offset } = data;
+
+		const serviceResult = await commentService.getPart(limit, offset);
 
 		const resposne = {
 			type: 'GET_PART',
@@ -40,7 +42,7 @@ const get = async (ws, data) => {
 	} catch (err) {
 		ws.send(
 			JSON.stringify({
-				event: 'ADD_COMMENT',
+				event: 'GET_PART',
 				success: 'false',
 				data: err
 			})
@@ -50,4 +52,4 @@ const get = async (ws, data) => {
 	}
 };
 
-export default { create, get };
+export default { create, getPart };

@@ -52,11 +52,11 @@ const uploadFile = async file => {
 	}
 };
 
-const toUrl = async filePath => {
+const toBase64 = async filePath => {
 	try {
 		const { data, error } = await supabase.storage
 			.from('Files')
-			.createSignedUrl(filePath, 60 * 5);
+			.download(filePath);
 
 		if (error) {
 			console.log(error);
@@ -66,10 +66,13 @@ const toUrl = async filePath => {
 			};
 		}
 
-		return data.signedUrl;
+		const buffer = Buffer.from(await data.arrayBuffer());
+		const base64Data = buffer.toString('base64');
+
+		return base64Data;
 	} catch (err) {
 		throw err;
 	}
 };
 
-export default { uploadFile, toUrl };
+export default { uploadFile, toBase64 };

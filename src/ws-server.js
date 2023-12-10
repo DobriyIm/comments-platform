@@ -35,7 +35,9 @@ class WsServer {
 						);
 						break;
 					case 'GET_PART':
-						commentController.get(ws, data);
+						authMiddleware.authenticate(ws, msg, () =>
+							commentController.getPart(ws, data)
+						);
 						break;
 				}
 			});
