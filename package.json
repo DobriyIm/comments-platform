@@ -6,11 +6,12 @@
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "nodemon -r dotenv/config server.js"
+		"dev": "nodemon -r dotenv/config server.js",
+		"main": "node -r dotenv/config server.js"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/DobriyIm/comments-platform.git"
+		"url": "https://github.com/DobriyIm/comments-platform.git"
 	},
 	"author": "Artem Zhelikovskij",
 	"license": "ISC",

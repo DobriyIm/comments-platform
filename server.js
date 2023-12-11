@@ -15,7 +15,7 @@ db.connect()
 		wss.listen();
 
 		server.listen(PORT, () => {
-			console.log(`Server lostening on port ${PORT}`);
+			console.log(`Server listening on port ${PORT}`);
 		});
 	})
 	.catch(err =>
