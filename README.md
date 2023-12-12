@@ -46,6 +46,11 @@ After enter:
 npm run dev
 ```
 
+## Bugs and else
+
+- Lack of validation for data sent from the client side.
+- Not all errors are handled correctly.
+
 ## Project overview
 
 The server at `ws://localhost:3000` is started, accepts client connections and processes the message from clients in JSON format as text.
