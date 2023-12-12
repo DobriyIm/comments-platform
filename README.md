@@ -94,6 +94,8 @@ It is possible to attach `.jpg`, `.gif`, `.png`, `.txt` files in Base64 string f
 	"data": {
 		"text": "Some text....",
 		// optional
+		"parentId": "comment id",
+		// optional
 		"file": {
 			"name": "HelloWorld.txt",
 			"data": "SGVsbG8gV29ybGQh"
